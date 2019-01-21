@@ -1,0 +1,24 @@
+{
+    "modListVersion": 2,
+    "modList":
+    [
+        {
+            "modid": "mirageorb",
+            "name": "Mirage Orb",
+            "description": "A Minecraft mod that adds the Mirage Orb",
+            "version": "${version}",
+            "mcversion": "${mcversion}",
+            "url": "",
+            "updateUrl": "",
+            "authorList": ["bright_spark"],
+            "credits": "",
+            "logoFile": "",
+            "screenshots": [],
+            "parent": "",
+            "dependants": [],
+            "dependencies": [],
+            "requiredMods": [],
+            "useDependencyInformation": true
+        }
+    ]
+}
