@@ -22,7 +22,6 @@ public class EntityPlayerGhost extends EntityLivingBase implements IEntityAdditi
 	private static final String KEY_AGE = "ghostAge";
 	private static final String KEY_SKIN = "ghostSkin";
 	private final int MAX_GHOST_AGE = ModConfig.mirageOrbGhostLife * 20;
-	private int ghostAge;
 	public ResourceLocation playerSkin;
 	public EnumHandSide handSide;
 
@@ -51,8 +50,8 @@ public class EntityPlayerGhost extends EntityLivingBase implements IEntityAdditi
 	@Override
 	public void onLivingUpdate()
 	{
-		ghostAge++;
-		if(!world.isRemote && ghostAge > MAX_GHOST_AGE)
+		ticksExisted++;
+		if(!world.isRemote && ticksExisted > MAX_GHOST_AGE)
 			setDead();
 	}
 
@@ -137,7 +136,6 @@ public class EntityPlayerGhost extends EntityLivingBase implements IEntityAdditi
 	public void readEntityFromNBT(NBTTagCompound nbt)
 	{
 		super.readEntityFromNBT(nbt);
-		ghostAge = nbt.getInteger(KEY_AGE);
 		playerSkin = new ResourceLocation(nbt.getString(KEY_SKIN));
 	}
 
@@ -145,7 +143,11 @@ public class EntityPlayerGhost extends EntityLivingBase implements IEntityAdditi
 	public void writeEntityToNBT(NBTTagCompound nbt)
 	{
 		super.writeEntityToNBT(nbt);
-		nbt.setInteger(KEY_AGE, ghostAge);
 		nbt.setString(KEY_SKIN, playerSkin.toString());
+	}
+
+	public int getAgeRemaining()
+	{
+		return MAX_GHOST_AGE - ticksExisted;
 	}
 }

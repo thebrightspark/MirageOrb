@@ -155,13 +155,15 @@ public class RenderPlayerGhost extends RenderLivingBase<EntityPlayerGhost>
 	}
 
 	@Override
-	protected void renderModel(EntityPlayerGhost entitylivingbaseIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor)
+	protected void renderModel(EntityPlayerGhost entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor)
 	{
 		//Make the entity render see-through
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-		GlStateManager.color(1f, 1f, 1f, 0.5f);
-		super.renderModel(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+		int ageLeft = entity.getAgeRemaining();
+		float alpha = ageLeft > 20 ? 0.5f : 0.5f * ((float) ageLeft / 20f);
+		GlStateManager.color(1f, 1f, 1f, alpha);
+		super.renderModel(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
 		GlStateManager.disableBlend();
 	}
 }
