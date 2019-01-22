@@ -47,7 +47,6 @@ public class ItemMirageOrb extends Item
 		//Tell server to spawn the ghost and start item cooldown
 		if(world.isRemote && player instanceof AbstractClientPlayer)
 		{
-			MirageOrb.logger.info("Sending message to server to spawn ghost");
 			MessageSpawnGhostOnServer message = new MessageSpawnGhostOnServer();
 			message.playerName = player.getName();
 			message.resourceLocation = ((AbstractClientPlayer) player).getLocationSkin();

@@ -25,7 +25,7 @@ public class RenderPlayerGhost extends RenderLivingBase<EntityPlayerGhost>
 	@Override
 	protected ResourceLocation getEntityTexture(EntityPlayerGhost entity)
 	{
-		return null;
+		return entity.playerSkin == null || entity.playerSkin.getPath().isEmpty() ? DEFAULT_RES_LOC : entity.playerSkin;
 	}
 
 	@Override

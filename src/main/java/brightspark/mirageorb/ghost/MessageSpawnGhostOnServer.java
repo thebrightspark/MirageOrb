@@ -83,7 +83,6 @@ public class MessageSpawnGhostOnServer implements IMessage
 				@Override
 				public void run()
 				{
-					MirageOrb.logger.info("Processing MessageSpawnGhostOnServer");
 					WorldServer server = (WorldServer) ctx.getServerHandler().player.world;
 					EntityPlayer player = server.getPlayerEntityByName(message.playerName);
 					if(player == null)
@@ -106,14 +105,13 @@ public class MessageSpawnGhostOnServer implements IMessage
 						return;
 
 					//Start cooldown
-					player.getCooldownTracker().setCooldown(MirageOrb.MIRAGE_ORB, ModConfig.mirageOrbCooldown * 20);
+					if(!player.isCreative())
+						player.getCooldownTracker().setCooldown(MirageOrb.MIRAGE_ORB, ModConfig.mirageOrbCooldown * 20);
 
 					//Create ghost
-					MirageOrb.logger.info("Creating ghost entity");
 					EntityPlayerGhost ghost = new EntityPlayerGhost(server, player);
 					ghost.playerSkin = message.resourceLocation;
 					server.spawnEntity(ghost);
-					MirageOrb.logger.info("Ghost entity spawned, updating clients");
 
 					//Update the client entities with the correct data
 					MirageOrb.NETWORK.sendToAll(new MessageSetClientGhostData(ghost.getEntityId(), message));

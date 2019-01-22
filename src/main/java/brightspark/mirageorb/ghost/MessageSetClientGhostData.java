@@ -87,7 +87,6 @@ public class MessageSetClientGhostData implements IMessage
 				@Override
 				public void run()
 				{
-					MirageOrb.logger.info("Processing MessageSetClientGhostData");
 					World world = Minecraft.getMinecraft().world;
 					Entity entity = world.getEntityByID(message.ghostId);
 					if(!(entity instanceof EntityPlayerGhost))
