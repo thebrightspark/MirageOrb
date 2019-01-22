@@ -1,0 +1,22 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        " P ",
+        "PEP",
+        " P "
+    ],
+    "key": {
+        "P": {
+            "type": "forge:ore_dict",
+            "ore": "dustPrismarine"
+        },
+        "E": {
+            "item": "minecraft:ender_eye",
+            "data": 0
+        }
+    },
+    "result": {
+        "item": "mirageorb:mirageorb",
+        "data": 0
+    }
+}
