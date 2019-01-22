@@ -2,6 +2,7 @@ package brightspark.mirageorb.ghost;
 
 import brightspark.mirageorb.ItemMirageOrb;
 import brightspark.mirageorb.MirageOrb;
+import brightspark.mirageorb.ModConfig;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -103,6 +104,9 @@ public class MessageSpawnGhostOnServer implements IMessage
 					}
 					if(!holdingOrb || player.getCooldownTracker().hasCooldown(MirageOrb.MIRAGE_ORB))
 						return;
+
+					//Start cooldown
+					player.getCooldownTracker().setCooldown(MirageOrb.MIRAGE_ORB, ModConfig.mirageOrbCooldown * 20);
 
 					//Create ghost
 					MirageOrb.logger.info("Creating ghost entity");

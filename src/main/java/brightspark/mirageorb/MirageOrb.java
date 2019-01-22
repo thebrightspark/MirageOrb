@@ -1,6 +1,8 @@
 package brightspark.mirageorb;
 
 import brightspark.mirageorb.ghost.EntityPlayerGhost;
+import brightspark.mirageorb.ghost.MessageSetClientGhostData;
+import brightspark.mirageorb.ghost.MessageSpawnGhostOnServer;
 import brightspark.mirageorb.ghost.RenderPlayerGhost;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
@@ -54,7 +56,8 @@ public class MirageOrb
 		logger = event.getModLog();
 
 		NETWORK = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
-		//Messages
+		NETWORK.registerMessage(MessageSpawnGhostOnServer.Handler.class, MessageSpawnGhostOnServer.class, 0, Side.SERVER);
+		NETWORK.registerMessage(MessageSetClientGhostData.Handler.class, MessageSetClientGhostData.class, 1, Side.CLIENT);
 	}
 
 	@SubscribeEvent

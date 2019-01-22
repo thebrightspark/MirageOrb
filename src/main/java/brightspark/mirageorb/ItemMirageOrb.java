@@ -44,9 +44,7 @@ public class ItemMirageOrb extends Item
 		if(player.getCooldownTracker().hasCooldown(this))
 			return super.onItemRightClick(world, player, hand);
 
-		//Start the cooldown and spawn the ghost
-		player.getCooldownTracker().setCooldown(this, ModConfig.mirageOrbCooldown * 20);
-		MirageOrb.logger.info("Cooldown started");
+		//Tell server to spawn the ghost and start item cooldown
 		if(world.isRemote && player instanceof AbstractClientPlayer)
 		{
 			MirageOrb.logger.info("Sending message to server to spawn ghost");
