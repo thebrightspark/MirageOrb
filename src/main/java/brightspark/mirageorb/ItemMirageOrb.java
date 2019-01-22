@@ -65,6 +65,7 @@ public class ItemMirageOrb extends Item
 			message.swingProgressInt = player.swingProgressInt;
 			message.swingingHand = player.swingingHand;
 			message.handSide = player.getPrimaryHand();
+			MirageOrb.NETWORK.sendToServer(message);
 		}
 		return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
@@ -79,6 +80,6 @@ public class ItemMirageOrb extends Item
 			return;
 		float cooldown = Minecraft.getMinecraft().player.getCooldownTracker().getCooldown(stack.getItem(), Minecraft.getMinecraft().getRenderPartialTicks());
 		if(cooldown > 0F)
-			tooltip.add(I18n.format(tooltipPrefix + "3", String.format("%.1f", (ModConfig.mirageOrbCooldown * 20) * (1F - cooldown))));
+			tooltip.add(I18n.format(tooltipPrefix + "3", String.format("%.1f", ModConfig.mirageOrbCooldown * cooldown)));
 	}
 }
