@@ -51,7 +51,7 @@ public class MirageOrb
 
 	public static SimpleNetworkWrapper NETWORK;
 
-	public static Item MIRAGE_ORB = new ItemMirageOrb();
+	public static final Item MIRAGE_ORB = new ItemMirageOrb();
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)

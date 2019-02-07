@@ -19,7 +19,6 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EntityPlayerGhost extends EntityLivingBase implements IEntityAdditionalSpawnData
 {
-	private static final String KEY_AGE = "ghostAge";
 	private static final String KEY_SKIN = "ghostSkin";
 	private final int MAX_GHOST_AGE = ModConfig.mirageOrbGhostLife * 20;
 	public ResourceLocation playerSkin;
