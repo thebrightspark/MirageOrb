@@ -10,7 +10,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -83,5 +86,12 @@ public class MirageOrb
 	{
 		ModelLoader.setCustomModelResourceLocation(MIRAGE_ORB, 0, new ModelResourceLocation(MIRAGE_ORB.getRegistryName(), "inventory"));
 		RenderingRegistry.registerEntityRenderingHandler(EntityPlayerGhost.class, RenderPlayerGhost::new);
+	}
+
+	@SubscribeEvent
+	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event)
+	{
+		if(event.getModID().equals(MODID))
+			ConfigManager.sync(MODID, Config.Type.INSTANCE);
 	}
 }
