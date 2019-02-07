@@ -50,7 +50,6 @@ public class EntityPlayerGhost extends EntityLivingBase implements IEntityAdditi
 	@Override
 	public void onLivingUpdate()
 	{
-		ticksExisted++;
 		if(!world.isRemote && ticksExisted > MAX_GHOST_AGE)
 			setDead();
 	}
