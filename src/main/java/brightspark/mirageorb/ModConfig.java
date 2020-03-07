@@ -20,6 +20,9 @@ public class ModConfig
 	@Config.RangeInt(min = 1)
 	public static int mirageOrbGhostLife = 10;
 
+	@Config.Comment("If true, then the Mirage Orb is consumed when used")
+	public static boolean consumeSelf = false;
+
 	@Config.Comment({
 		"The item to consume whenever the Mirage Orb is used",
 		"The format here is '<modId>:<registryName>@<metaData>'",
@@ -27,14 +30,14 @@ public class ModConfig
 		"If metaData isn't given, then 0 is used by default",
 		"Use '*' as a wildcard for metaData (will match any meta data)"
 	})
-	private static String costItem = "minecraft:ender_pearl";
+	public static String costItem = "minecraft:ender_pearl";
 
 	@Config.Comment({
 		"The amount of the 'costItem' that is consumed whenever the Mirage Orb is used",
 		"Set this to 0 to not require any item to be consumed"
 	})
 	@Config.RangeInt(min = 0)
-	private static int costAmount = 1;
+	public static int costAmount = 1;
 
 	@Config.Ignore
 	private static Pattern costPattern = Pattern.compile("(?:(?<modid>\\w+):)?(?<regName>\\w+)(?:@(?<meta>.+))?");

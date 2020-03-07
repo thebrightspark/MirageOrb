@@ -91,16 +91,16 @@ public class MessageUseOrb implements IMessage
 				}
 
 				//Validate item and cooldown
-				boolean holdingOrb = false;
+				ItemStack heldOrb = null;
 				for(ItemStack held : player.getHeldEquipment())
 				{
 					if(held.getItem() instanceof ItemMirageOrb)
 					{
-						holdingOrb = true;
+						heldOrb = held;
 						break;
 					}
 				}
-				if(!holdingOrb)
+				if(heldOrb == null)
 				{
 					MirageOrb.logger.warn("Player {} isn't actually holding a Mirage Orb!", message.playerName);
 					return;
@@ -135,10 +135,13 @@ public class MessageUseOrb implements IMessage
 							if (toConsumeRemaining <= 0)
 								break;
 						}
-
-						//Start cooldown
-						player.getCooldownTracker().setCooldown(MirageOrb.MIRAGE_ORB, ModConfig.mirageOrbCooldown * 20);
 					}
+
+					if (ModConfig.consumeSelf)
+						heldOrb.shrink(1);
+
+					//Start cooldown
+					player.getCooldownTracker().setCooldown(MirageOrb.MIRAGE_ORB, ModConfig.mirageOrbCooldown * 20);
 				}
 
 				//Create ghost
