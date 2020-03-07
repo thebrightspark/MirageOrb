@@ -1,12 +1,12 @@
-package brightspark.mirageorb.ghost;
+package brightspark.mirageorb.message;
 
 import brightspark.mirageorb.MirageOrb;
+import brightspark.mirageorb.ghost.EntityPlayerGhost;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
-import net.minecraft.util.IThreadListener;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -15,15 +15,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class MessageSetClientGhostData implements IMessage
 {
 	private int ghostId;
-	public float rotationYaw, rotationPitch, rotationYawHead, renderYawOffset, swingProgress, limbSwing, limbSwingAmount;
-	public boolean isSneaking, isSwingInProgress;
-	public int swingProgressInt;
-	public EnumHand swingingHand;
-	public EnumHandSide handSide;
+	private float rotationYaw, rotationPitch, rotationYawHead, renderYawOffset, swingProgress, limbSwing, limbSwingAmount;
+	private boolean isSneaking, isSwingInProgress;
+	private int swingProgressInt;
+	private EnumHand swingingHand;
+	private EnumHandSide handSide;
 
 	public MessageSetClientGhostData() {}
 
-	public MessageSetClientGhostData(int ghostId, MessageSpawnGhostOnServer message)
+	public MessageSetClientGhostData(int ghostId, MessageUseOrb message)
 	{
 		this.ghostId = ghostId;
 		rotationYaw = message.rotationYaw;
@@ -81,15 +81,16 @@ public class MessageSetClientGhostData implements IMessage
 		@Override
 		public IMessage onMessage(final MessageSetClientGhostData message, MessageContext ctx)
 		{
-			final IThreadListener mainThread = Minecraft.getMinecraft();
-			mainThread.addScheduledTask(new Runnable()
+			Minecraft mc = Minecraft.getMinecraft();
+			//noinspection Convert2Lambda
+			mc.addScheduledTask(new Runnable()
 			{
 				@Override
 				public void run()
 				{
-					World world = Minecraft.getMinecraft().world;
+					World world = mc.world;
 					Entity entity = world.getEntityByID(message.ghostId);
-					if(!(entity instanceof EntityPlayerGhost))
+					if (!(entity instanceof EntityPlayerGhost))
 					{
 						MirageOrb.logger.info("{} isn't an EntityPlayerGhost!", entity);
 						return;

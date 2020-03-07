@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.Nullable;
 
@@ -43,7 +44,7 @@ public class RenderPlayerGhost extends RenderLivingBase<EntityPlayerGhost>
 	@Override
 	public void doRender(EntityPlayerGhost entity, double x, double y, double z, float entityYaw, float partialTicks)
 	{
-		if(net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new RenderLivingEvent.Pre<>(entity, this, x, y, z)))
+		if(MinecraftForge.EVENT_BUS.post(new RenderLivingEvent.Pre<>(entity, this, x, y, z)))
 			return;
 		GlStateManager.pushMatrix();
 		GlStateManager.disableCull();
@@ -61,24 +62,10 @@ public class RenderPlayerGhost extends RenderLivingBase<EntityPlayerGhost>
 
 			if(shouldSit && entity.getRidingEntity() instanceof EntityLivingBase)
 			{
-				float f3 = MathHelper.wrapDegrees(headYaw);
-
-				if(f3 < -85.0F)
-				{
-					f3 = -85.0F;
-				}
-
-				if(f3 >= 85.0F)
-				{
-					f3 = 85.0F;
-				}
-
+				float f3 = MathHelper.clamp(MathHelper.wrapDegrees(headYaw), -85F, 85F);
 				renderYawOffset = rotationYawHead - f3;
-
 				if(f3 * f3 > 2500.0F)
-				{
 					renderYawOffset += f3 * 0.2F;
-				}
 			}
 
 			renderLivingAt(entity, x, y, z);
@@ -91,16 +78,10 @@ public class RenderPlayerGhost extends RenderLivingBase<EntityPlayerGhost>
 			{
 				swingAmount = entity.limbSwingAmount;
 				swing = entity.limbSwing;
-
 				if(entity.isChild())
-				{
 					swing *= 3.0F;
-				}
-
 				if(swingAmount > 1.0F)
-				{
 					swingAmount = 1.0F;
-				}
 			}
 
 			GlStateManager.enableAlpha();
@@ -112,38 +93,26 @@ public class RenderPlayerGhost extends RenderLivingBase<EntityPlayerGhost>
 				boolean flag1 = setScoreTeamColor(entity);
 				GlStateManager.enableColorMaterial();
 				GlStateManager.enableOutlineMode(getTeamColor(entity));
-
 				if(!renderMarker)
-				{
 					renderModel(entity, swing, swingAmount, 0, headYaw, entity.rotationPitch, scale);
-				}
-
 				GlStateManager.disableOutlineMode();
 				GlStateManager.disableColorMaterial();
-
 				if(flag1)
-				{
 					unsetScoreTeamColor();
-				}
 			}
 			else
 			{
 				boolean flag = setDoRenderBrightness(entity, partialTicks);
 				renderModel(entity, swing, swingAmount, 0, headYaw, entity.rotationPitch, scale);
-
 				if(flag)
-				{
 					unsetBrightness();
-				}
-
 				GlStateManager.depthMask(true);
 			}
-
 			GlStateManager.disableRescaleNormal();
 		}
 		catch(Exception exception)
 		{
-			MirageOrb.logger.error("Couldn\'t render entity\n" + exception.getMessage());
+			MirageOrb.logger.error("Couldn't render entity\n" + exception.getMessage());
 		}
 
 		GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
@@ -151,7 +120,7 @@ public class RenderPlayerGhost extends RenderLivingBase<EntityPlayerGhost>
 		GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
 		GlStateManager.enableCull();
 		GlStateManager.popMatrix();
-		net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new RenderLivingEvent.Post<>(entity, this, x, y, z));
+		MinecraftForge.EVENT_BUS.post(new RenderLivingEvent.Post<>(entity, this, x, y, z));
 	}
 
 	@Override

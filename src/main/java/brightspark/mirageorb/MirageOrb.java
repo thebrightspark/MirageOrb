@@ -1,9 +1,9 @@
 package brightspark.mirageorb;
 
 import brightspark.mirageorb.ghost.EntityPlayerGhost;
-import brightspark.mirageorb.ghost.MessageSetClientGhostData;
-import brightspark.mirageorb.ghost.MessageSpawnGhostOnServer;
 import brightspark.mirageorb.ghost.RenderPlayerGhost;
+import brightspark.mirageorb.message.MessageSetClientGhostData;
+import brightspark.mirageorb.message.MessageUseOrb;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -17,6 +17,7 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -37,10 +38,7 @@ public class MirageOrb
 
 	public static Logger logger;
 
-	@Mod.Instance(MODID)
-	public static MirageOrb INSTANCE;
-
-	public static final CreativeTabs TAB = new CreativeTabs(MODID)
+	static final CreativeTabs TAB = new CreativeTabs(MODID)
 	{
 		@Override
 		public ItemStack createIcon()
@@ -59,8 +57,14 @@ public class MirageOrb
 		logger = event.getModLog();
 
 		NETWORK = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
-		NETWORK.registerMessage(MessageSpawnGhostOnServer.Handler.class, MessageSpawnGhostOnServer.class, 0, Side.SERVER);
+		NETWORK.registerMessage(MessageUseOrb.Handler.class, MessageUseOrb.class, 0, Side.SERVER);
 		NETWORK.registerMessage(MessageSetClientGhostData.Handler.class, MessageSetClientGhostData.class, 1, Side.CLIENT);
+	}
+
+	@EventHandler
+	public void postInit(FMLPostInitializationEvent event)
+	{
+		ModConfig.initCostStack();
 	}
 
 	@SubscribeEvent
@@ -92,6 +96,9 @@ public class MirageOrb
 	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event)
 	{
 		if(event.getModID().equals(MODID))
+		{
 			ConfigManager.sync(MODID, Config.Type.INSTANCE);
+			ModConfig.initCostStack();
+		}
 	}
 }
